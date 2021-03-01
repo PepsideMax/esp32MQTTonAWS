@@ -26,7 +26,7 @@ then choose your bucket from the previous step and as key I choose data/${device
 and the role I gave is AWSIOT_S3_FULL. 
 the data you send should now appear in your bucket.
 
-# part 2 
+# part 2 cloud api
 
 Now we are storing the data on a bucket yet this is not ideal so now create an EC2 virtual machine on aws. In my application I used an ubuntu server 
 with the t2 micro tear this is one of the verry cheap tears and even free if you play your cards right. The rest you can mostly ignore except for the 6ste step here you have to add http and https (port 80 and 443 do not remove the port 22 connection). 
@@ -60,10 +60,15 @@ everything in <> should be changed to something of your choice. do remember thes
 
 
 CREATE DATABASE <DATABASENAME>;
+  
 CREATE USER '<USERNAME>'@'localhost' IDENTIFIED BY '<PASSWORD>';
+  
 GRANT ALL PRIVILEGES ON <DATABASENAME>.* TO '<USERNAME>'@'localhost';
+  
 FLUSH PRIVILEGES;
+
 USE <DATABASENAME>;
+  
 CREATE TABLE <TABLENAME> (  
 ID INT NOT NULL AUTO_INCREMENT,  
 Device_id VARCHAR (100) NOT NULL,  
