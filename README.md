@@ -22,7 +22,7 @@ Now on AWS go to the S3 section and here we are going to make a bucket for this 
 
 now go back to AWS IoT and in act got ot rules here you have to add a new rule here you choose a rule name and in the select * from you change the iot/topic to the before chosen mqtt topic in your secrets.h. 
 After this go to add action here you select store message in amazon s3 bucket.
-then choose your bucket from the previous step and as key I choose dht/${timestamp()}.
+then choose your bucket from the previous step and as key I choose data/${device_id}_${topic()}/${timestamp()}.
 and the role I gave is AWSIOT_S3_FULL. 
 the data you send should now appear in your bucket.
 
