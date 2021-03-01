@@ -56,20 +56,20 @@ sudo mysql
 
 now you have entered the mysql command line
 now follow these steps (can also be found in the sql.txt file)
-everything in <> should be changed to something of your choice. do remember these because we will be needing them for your secrets file.
+everything in [] should be changed to something of your choice. do remember these because we will be needing them for your secrets file.
 
 
-CREATE DATABASE <DATABASENAME>;
+CREATE DATABASE [DATABASENAME];
   
-CREATE USER '<USERNAME>'@'localhost' IDENTIFIED BY '<PASSWORD>';
+CREATE USER '[USERNAME]'@'localhost' IDENTIFIED BY '[PASSWORD]';
   
-GRANT ALL PRIVILEGES ON <DATABASENAME>.* TO '<USERNAME>'@'localhost';
+GRANT ALL PRIVILEGES ON [DATABASENAME].* TO '[USERNAME]'@'localhost';
   
 FLUSH PRIVILEGES;
 
 USE <DATABASENAME>;
   
-CREATE TABLE <TABLENAME> (  
+CREATE TABLE [TABLENAME] (  
 ID INT NOT NULL AUTO_INCREMENT,  
 Device_id VARCHAR (100) NOT NULL,  
 Temperature Float,  
