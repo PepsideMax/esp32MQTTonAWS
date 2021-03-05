@@ -59,15 +59,15 @@ now follow these steps (can also be found in the sql.txt file)
 everything in [] should be changed to something of your choice. do remember these because we will be needing them for your secrets file.
 
 
-CREATE DATABASE [DATABASENAME];
+CREATE DATABASE esp32;
   
 CREATE USER '[USERNAME]'@'localhost' IDENTIFIED BY '[PASSWORD]';
   
-GRANT ALL PRIVILEGES ON [DATABASENAME].* TO '[USERNAME]'@'localhost';
+GRANT ALL PRIVILEGES ON esp32.* TO '[USERNAME]'@'localhost';
   
 FLUSH PRIVILEGES;
 
-USE <DATABASENAME>;
+USE esp32;
   
 CREATE TABLE [TABLENAME] (  
 ID INT NOT NULL AUTO_INCREMENT,  
@@ -77,7 +77,9 @@ Humidity Float,
 Datetime DATETIME DEFAULT CURRENT_TIMESTAMP,
 PRIMARY KEY (ID)  
 ); 
+
 quit
+
 Now you have made a database for your data to test if this was done correctly, copy/create the test.php and mysql_connect.php from the cloud_api folder to the /var/www/html directory. 
 In this same directory you create a secrets.php from the example_secrets in the cloud_api.
 
