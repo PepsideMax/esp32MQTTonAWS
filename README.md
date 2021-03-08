@@ -59,17 +59,17 @@ now follow these steps (can also be found in the sql.txt file)
 everything in [] should be changed to something of your choice. do remember these because we will be needing them for your secrets file.
 
 
-CREATE DATABASE esp32;
+CREATE DATABASE [DATABASENAME];
   
 CREATE USER '[USERNAME]'@'localhost' IDENTIFIED BY '[PASSWORD]';
   
-GRANT ALL PRIVILEGES ON esp32.* TO '[USERNAME]'@'localhost';
+GRANT ALL PRIVILEGES ON [DATABASENAME].* TO '[USERNAME]'@'localhost';
   
 FLUSH PRIVILEGES;
 
-USE esp32;
+USE [DATABASENAME];
   
-CREATE TABLE [TABLENAME] (  
+CREATE TABLE esp32 (  
 ID INT NOT NULL AUTO_INCREMENT,  
 Device_id VARCHAR (100) NOT NULL,  
 Temperature Float,  
