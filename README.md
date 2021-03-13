@@ -98,3 +98,132 @@ To now make aws send your data to the correct location go back to the rule we ma
 
 Now by opening your site followed by list.php you should see your esp32 data.
 
+# part 3 visualization 
+
+
+Now that we have our data on the device we want to display it using grafana and we want to know how our virtual machine is doing using telegraf.
+
+## influxdb
+First install infuxdb as our database.
+
+sudo curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -
+
+then add and influx data repository 
+
+source /etc/lsb-release
+echo "deb https://repos.influxdata.com/${DISTRIB_ID,,} ${DISTRIB_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+
+now update the package list and install influxdb
+
+sudo apt update
+sudo apt install influxdb -y
+
+Now to launch influxdb on boot start the influxdb service.
+
+sudo systemctl start influxdb
+sudo systemctl enable influxdb
+
+
+to see if influxdb is running correctly do:
+
+netstat -plntu
+
+if in this list port 8088 and 8086 are in a LISTEN state it is running.
+
+now create a user and database this is about the same as we did in mysql. 
+
+you start with the influx command 
+
+infux 
+
+to connect on the 8086 port now you start by creating a database and user for the telegraf client.
+
+create database telegraf
+create user telegraf with password 'hakase-ndlr'
+
+To make sure these have been created use:
+
+show databases
+show users
+
+Here you will see the database name telegraf and user name telegraf in you list.
+
+## telegraf
+To install telegraf. 
+
+sudo apt install telegraf -y
+
+Now again we want telegraf to start on boot so we start the telegraf service. 
+
+sudo systemctl start telegraf
+sudo systemctl enable telegraf
+
+To check if telegraf actualy started, execute.
+
+sudo systemctl status telegraf
+
+the basics of telegraf is that it has 4 plugin types namely:
+1 Using the 'Input Plugins' to collect metrics.
+2 Using the 'Processor Plugins' to transform, decorate, and filter metrics.
+3 Using the 'Aggregator Plugins' to create and aggregate metrics.
+4 And using the 'Output Plugins' to write metrics to various destinations.
+We are going to use the 1ste type of plugin where you use telegraf to collect system metrics and 4the type to get the metrics to influxdb.
+
+First we make a backup of the telegraf.conf file to restore the original configuration incase of mistakes. 
+
+cd /etc/telegraf/
+mv telegraf.conf telegraf.conf.default
+
+now remove the original telegraf.conf 
+
+rm telegraf.conf 
+
+now create a new telegraf.conf using nano or your editor of choice and past the data found in the telegraf.txt file on the github in the grafana folder. 
+
+nano telegraf.conf
+
+now restart telegraf 
+
+sudo systemctl restart telegraf
+
+And test if it worked by using these 3 commands 
+
+sudo telegraf -test -config /etc/telegraf/telegraf.conf --input-filter cpu
+sudo telegraf -test -config /etc/telegraf/telegraf.conf --input-filter net
+sudo telegraf -test -config /etc/telegraf/telegraf.conf --input-filter mem
+
+If this still gives you rerrors you can retry or configure telegraf via the command manager. 
+
+telegraf config -input-filter cpu:mem:disk:swap:system -output-filter influxdb > telegraf.conf
+cat telegraf.conf
+
+## grafana
+
+To install grafana this could be an outdated method by now so make sure to check the tutorial by grafana https://grafana.com/docs/grafana/latest/installation/debian/. 
+In this case we are using grafana enterprise. 
+first do 
+
+sudo apt-get install -y apt-transport-https
+sudo apt-get install -y software-properties-common wget
+wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+
+then do:
+echo "deb https://packages.grafana.com/enterprise/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+
+to get the latest stable release.
+and now for the actual installation using apt now that grafana is in the package list.
+ 
+sudo apt update
+sudo apt install grafana-enterprise
+
+Now again we want grafana to run as a service as well so we use the commands:
+
+sudo systemctl daemon-reload
+sudo systemctl start grafana-server
+sudo systemctl status grafana-server
+sudo systemctl enable grafana-server.service
+
+now go back to aws and here we have to open the port 3000 to the world in order to access grafana from other devices. 
+To do this go to ec2 on aws and in instances klick on your instance now at the bottom there is a window with the instance details. Here you click on security then on the link under the title security groups. This link will bring you to the launch wizard for your security. Here you click on edit inbound rules and add a custom TCP rule for the port 3000 and with the course 0.0.0.0/0.
+
+
