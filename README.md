@@ -226,8 +226,15 @@ sudo systemctl enable grafana-server.service
 now go back to aws and here we have to open the port 3000 to the world in order to access grafana from other devices. 
 To do this go to ec2 on aws and in instances klick on your instance now at the bottom there is a window with the instance details. Here you click on security then on the link under the title security groups. This link will bring you to the launch wizard for your security. Here you click on edit inbound rules and add a custom TCP rule for the port 3000 and with the course 0.0.0.0/0.
 
+Once the port is open you can surf to you ip flowed by the port 3000 to go to the grafana interface here you add mysql as your data source. to do more things in grafana ia would suggest looking up an actual tutorial or trying sommething like this https://docs.alfresco.com/sync-service/3.1/admin/monitor/grafana/.
 
-# part 4 Lambda 
+# part 4 lambda 
 
+Now we want to control the led we have on our esp32 which has not been used up until this point. To do this we will use lambda on aws to create a function in python that listens to our mqtt service and turns the light on in case the temperature is too high. 
 
+To create a lambda function go to the compute section on aws and select lambda. in functions you click create function. Normally ‘author from scratch’ is selected, if not select this then you can fill in the name of this function and in runtime select python, the version doesn't really matter. 
 
+Now you should see an add trigger button click here and select AWS IoT then select custom IoT rule and existing rule. Now you should be able to select the rule we made before to send the data from iot to the bucket and the api on the virtual machine also make sure to select the enable trigger that will make your life easier. Now to actually make the function useful you should add the code found in de lmada folder in the AWS IoT file to the lambda_funtion.py file on aws and editing the led topic to your own and correcting the server to the one you are on now. 
+
+Now as an extra you can add another function this time using API gateway as a trigger to turn the led on and off using a url. for this the code can be found in the api file in the lambda folder. Then just surf to the given url followed by "?led=1" or "?led=0" to turn the led on and off this could then also be used to make a button in grafana.
+ 
