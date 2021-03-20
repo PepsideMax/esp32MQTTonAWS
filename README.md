@@ -227,3 +227,7 @@ now go back to aws and here we have to open the port 3000 to the world in order 
 To do this go to ec2 on aws and in instances klick on your instance now at the bottom there is a window with the instance details. Here you click on security then on the link under the title security groups. This link will bring you to the launch wizard for your security. Here you click on edit inbound rules and add a custom TCP rule for the port 3000 and with the course 0.0.0.0/0.
 
 
+# part 4 Lambda 
+
+
+
