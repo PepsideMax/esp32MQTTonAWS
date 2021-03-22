@@ -1,8 +1,8 @@
 # esp32MQTTonAWS
 
 to make this project you will need:
-activated AWS account 
-esp32
+activated AWS account, 
+esp32 and a
 dht11/22
 
 In aws IoT we start by creating a thing in the manage things tab. The name of this thing is not important just see that you remember it. 
@@ -95,6 +95,10 @@ Now to actually get certified we need to use certbot just use the ‘sudo certbo
 Now for the finishing touches add the api.php file and list.php files to the var/www/html folder.
 
 To now make aws send your data to the correct location go back to the rule we made in part 1 and add a new action to this rule a http action withe as link your very amazing link followed by /api.php. and three headers withe the keys: device_id, temperature and humidity and values: ${devide_id}, ${temperature} and ${humidity} respectively.
+
+Now go to destinations and add the api.php link here aswell and to enable it add the api token found using the
+sudo tail /var/log/apache2/access.log
+command.
 
 Now by opening your site followed by list.php you should see your esp32 data.
 
