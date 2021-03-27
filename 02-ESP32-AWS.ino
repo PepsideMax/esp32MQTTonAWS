@@ -11,7 +11,7 @@
 WiFiClientSecure net = WiFiClientSecure();
 MQTTClient client = MQTTClient(256);
 
-#define LED_PIN 19
+#define LED_PIN 2
 #define DHTPIN 18
 #define DHTTYPE DHT11
 
